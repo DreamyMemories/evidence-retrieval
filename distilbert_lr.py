@@ -11,7 +11,6 @@ import joblib
 # physical_devices = tf.config.list_physical_devices('GPU')
 # print("Num GPUs Available: ", len(physical_devices))
 def get_distilbert_embeddings(data, tokenizer, model, batch_size=32):
-    # Placeholder for the embeddings
     all_embeddings = []
 
     for i in range(0, len(data), batch_size):
@@ -25,16 +24,13 @@ def get_distilbert_embeddings(data, tokenizer, model, batch_size=32):
         # Use the last_hidden_state so compatible with LSTM
         embeddings = outputs.last_hidden_state.numpy()
         all_embeddings.append(embeddings)
-        
 
-    # Concatenate all batch embeddings into a single array
-    # print(np.array(all_embeddings).shape)
     return np.vstack(all_embeddings)
 
 
 # Read data
-train_data = pd.read_csv('./train.csv')
-validation_data = pd.read_csv('./dev.csv')
+train_data = pd.read_csv('./data/train.csv')
+validation_data = pd.read_csv('./data/dev.csv')
 
 # Get the labels
 train_labels = train_data['label'].values

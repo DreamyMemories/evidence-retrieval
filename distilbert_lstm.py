@@ -43,8 +43,8 @@ def augment_data_bert(sentences, num_augments=1):
     return augmented_sentences
 
 # Read Data
-train_data = pd.read_csv('./train.csv')
-validation_data = pd.read_csv('./dev.csv')
+train_data = pd.read_csv('./data/train.csv')
+validation_data = pd.read_csv('./data/dev.csv')
 
 train_labels = train_data['label'].values
 validation_labels = validation_data['label'].values
@@ -74,6 +74,7 @@ validation_embeddings = get_distilbert_embeddings(validation_data, tokenizer, mo
 # Embedding dimension
 embedding_dim = 768  
 
+# Define the model
 model = Sequential()
 model.add(SpatialDropout1D(0.3))
 model.add(Bidirectional(LSTM(128, activation='tanh', recurrent_activation='sigmoid',
