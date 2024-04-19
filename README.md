@@ -6,7 +6,7 @@ This repository contains code and models for a text classification project using
 
 - `distilbert_lr.py`: This script trains a logistic regression model using embeddings from DistilBERT.
 - `distilbert_lstm.py`: This script trains an LSTM model using DistilBERT embeddings.
-- `prediction.ipynb`: A Jupyter notebook that loads trained models and performs predictions on new data for live demo purposes.
+- `inferenceNLU.ipynb`: A Jupyter notebook that loads trained models and performs predictions on new data for live demo purposes.
 - `distilbert_lstm2`: A directory containing the trained LSTM model saved in TensorFlow format.
 - `lr_model.pkl`: A pickle file containing the trained logistic regression model.
 
