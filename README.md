@@ -28,5 +28,5 @@ pip install tensorflow transformers pandas scikit-learn numpy nlpaug
 
 ## Running the Models
 
-To run the models, open up the `prediction.ipynb` notebook in Jupyter and follow the instructions to load the models and perform predictions on new data.
+To run the models, open up the `inferenceNLU.ipynb` notebook in Jupyter and follow the instructions to load the models and perform predictions on new data.
 
