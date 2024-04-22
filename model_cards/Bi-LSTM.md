@@ -124,5 +124,5 @@ Any inputs (concatenation of two sequences) longer than
 
 <!-- Any other information that would be useful for other people to know. -->
 
-70 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory on our hardware while maximising possible performance. Initial data pre processing is done through data augmentation using DistilBert embeddings to replace words that are contextually similar with p_aug = 0.3, aug_min = 1, top_k = 20 using nlaug library. Early stopping is used to prevent overfitting with patience of 5 epochs.
+70 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory on our hardware while maximising possible performance. Initial data pre processing is done through data augmentation using DistilBert embeddings to replace words that are contextually similar with p_aug = 0.3, aug_min = 1, top_k = 20 using nlaug library. Early stopping is used to prevent overfitting with patience of 5 epochs. Learning rate scheduler is used with decay steps of the length of the training embeddings divided by 128 with a decay rate of 0.9.  
 ```
