@@ -23,8 +23,8 @@ This is a classification model that was trained to
 
 <!-- Provide a longer summary of what this model is. -->
 
-This model is based upon a BERT model that was fine-tuned
-      on 30K pairs of texts.
+This model is a classical approach using logistic regression that was trained
+      on 23K pairs of texts.
 
 - **Developed by:** Wei Xiang Wong and Enlong Bo
 - **Language(s):** English
@@ -45,7 +45,7 @@ This model is based upon a BERT model that was fine-tuned
 
 <!-- This is a short stub of information on the training data that was used, and documentation related to data pre-processing or additional filtering (if applicable). -->
 
-23K pairs of evidence and claim which are augmented once through insertion further explained in "Additional Information"  which are then turned into word embeddings where the 'Evidence' and 'Claim' are concatenated together with a [SEP] token using DistilBert.
+23K pairs of evidence and claim turned into word embeddings where the 'Evidence' and 'Claim' are concatenated together with a [SEP] token using DistilBert.
 
 ### Training Procedure
 
@@ -115,10 +115,10 @@ The model obtained an accuracy of 82%, a recall of 63%, precision of 68% and F1-
 <!-- This section is meant to convey both technical and sociotechnical limitations. -->
 
 Any inputs (concatenation of two sequences) longer than
-      110 subwords will be truncated by the model.
+      110 tokens will be truncated by the model. This is due to the limitation of hardware where the memory is not enough to handle the word embeddings.
 
 ## Additional Information
 
 <!-- Any other information that would be useful for other people to know. -->
 
-Initial data pre processing is done through data augmentation using DistilBert embeddings to replace words that are contextually similar with p_aug = 0.3, aug_min = 1, top_k = 20 using nlaug library. 
+110 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory while maximising possible performance.
