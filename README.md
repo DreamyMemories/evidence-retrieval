@@ -30,3 +30,10 @@ pip install tensorflow transformers pandas scikit-learn numpy nlpaug
 
 To run the models, open up the `inferenceNLU.ipynb` notebook in Jupyter and follow the instructions to load the models and perform predictions on new data.
 
+## Models
+
+Models can be found at https://github.com/DreamyMemories/evidence-retrieval/tree/main/models where
+
+LSTM: lstm_ref_aug
+Logistic Regression: lr_model.pkl
+
