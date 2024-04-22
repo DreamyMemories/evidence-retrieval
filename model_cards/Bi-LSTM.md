@@ -45,7 +45,7 @@ This model uses Bi-LSTM followed up by a fully-connected layer that was trained
 
 <!-- This is a short stub of information on the training data that was used, and documentation related to data pre-processing or additional filtering (if applicable). -->
 
-23K pairs of evidence and claim which are augmented once through insertion further explained in "Additional Information"  which are then turned into word embeddings using DistilBert.
+23K pairs of evidence and claim which are augmented once through substitution further explained in "Additional Information"  which are then turned into word embeddings using DistilBert. Initial preprocessing also included the removal of `[REF]` tokens from the `Evidence` column.
 
 ### Training Procedure
 
@@ -118,11 +118,11 @@ The model obtained an accuracy of 85%, a recall of 71%, precision of 73% and F1-
 <!-- This section is meant to convey both technical and sociotechnical limitations. -->
 
 Any inputs (concatenation of two sequences) longer than
-      110 tokens will be truncated by the model. This is due to the limitation of hardware where the memory is not enough to handle the word embeddings.
+      70 tokens will be truncated by the model. This is due to the limitation of hardware where the memory is not enough to handle the word embeddings.
 
 ## Additional Information
 
 <!-- Any other information that would be useful for other people to know. -->
 
-110 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory while maximising possible performance. Initial data pre processing is done through data augmentation using DistilBert embeddings to replace words that are contextually similar with p_aug = 0.3, aug_min = 1, top_k = 20 using nlaug library. Early stopping is used to prevent overfitting with patience of 5 epochs.
+70 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory on our hardware while maximising possible performance. Initial data pre processing is done through data augmentation using DistilBert embeddings to replace words that are contextually similar with p_aug = 0.3, aug_min = 1, top_k = 20 using nlaug library. Early stopping is used to prevent overfitting with patience of 5 epochs.
 ```

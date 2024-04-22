@@ -45,7 +45,7 @@ This model is a classical approach using logistic regression that was trained
 
 <!-- This is a short stub of information on the training data that was used, and documentation related to data pre-processing or additional filtering (if applicable). -->
 
-23K pairs of evidence and claim turned into word embeddings where the 'Evidence' and 'Claim' are concatenated together with a [SEP] token using DistilBert.
+23K pairs of evidence and claim turned into word embeddings where the 'Evidence' and 'Claim' are concatenated together with a [SEP] token using DistilBert. Initial preprocessing also included the removal of `[REF]` tokens from the `Evidence` column.
 
 ### Training Procedure
 
@@ -121,4 +121,4 @@ Any inputs (concatenation of two sequences) longer than
 
 <!-- Any other information that would be useful for other people to know. -->
 
-110 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory while maximising possible performance.
+110 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory on our hardware while maximising possible performance.
