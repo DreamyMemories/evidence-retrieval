@@ -109,7 +109,7 @@ The model obtained an accuracy of 85%, a recall of 71%, precision of 73% and F1-
 
 
       - Transformers 4.40.0
-      - TensorFlow 2.10.1
+      - TensorFlow 2.12.1
       - Numpy 1.20.1
       - Pandas 1.2.3 
 
