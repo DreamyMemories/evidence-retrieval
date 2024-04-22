@@ -98,8 +98,8 @@ The model obtained an accuracy of 82%, a recall of 63%, precision of 68% and F1-
 
 
       - RAM: at least 16 GB
-      - Storage: at least 2GB,
-      - GPU: V100
+      - Storage: at least 100MB,
+      - GPU: RTX 2060
 
 ### Software
 
