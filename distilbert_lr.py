@@ -32,6 +32,9 @@ def get_distilbert_embeddings(data, tokenizer, model, batch_size=32):
 train_data = pd.read_csv('./data/train.csv')
 validation_data = pd.read_csv('./data/dev.csv')
 
+train_data['Evidence'] = train_data['Evidence'].replace(r'[REF]', '', regex=True)
+validation_data['Evidence'] = validation_data['Evidence'].replace(r'[REF]', '', regex=True)
+
 # Get the labels
 train_labels = train_data['label'].values
 validation_labels = validation_data['label'].values

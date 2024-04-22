@@ -25,7 +25,7 @@ def get_distilbert_embeddings(data, tokenizer, model, batch_size=32):
         batch = data.iloc[i:i+batch_size]
         # Combine claim and evidence into one string per pair
         texts = list(batch['Claim'] + " [SEP] " + batch['Evidence'])
-        inputs = tokenizer.batch_encode_plus(texts, padding='max_length', truncation=True, return_tensors="tf", max_length=110)
+        inputs = tokenizer.batch_encode_plus(texts, padding='max_length', truncation=True, return_tensors="tf", max_length=70)
 
         # Generate embeddings
         outputs = model(inputs['input_ids'], attention_mask=inputs['attention_mask'])
@@ -45,6 +45,9 @@ def augment_data_bert(sentences, num_augments=1):
 # Read Data
 train_data = pd.read_csv('./data/train.csv')
 validation_data = pd.read_csv('./data/dev.csv')
+
+train_data['Evidence'] = train_data['Evidence'].replace(r'[REF]', '', regex=True)
+validation_data['Evidence'] = validation_data['Evidence'].replace(r'[REF]', '', regex=True)
 
 train_labels = train_data['label'].values
 validation_labels = validation_data['label'].values
@@ -68,8 +71,24 @@ model = TFDistilBertModel.from_pretrained('distilbert-base-uncased')
 
 
 # Generate embeddings for your data
-training_embeddings = get_distilbert_embeddings(train_data_augmented, tokenizer, model)
+training_embeddings = get_distilbert_embeddings(train_data, tokenizer, model)
+augmented_embeddings = get_distilbert_embeddings(augmented_data, tokenizer, model)
 validation_embeddings = get_distilbert_embeddings(validation_data, tokenizer, model)
+
+# store embeddings and labels into dictionary, concatenate train and augmented into one. Shuffle the data and split into half.
+train_data = np.concatenate((training_embeddings, augmented_embeddings), axis=0)
+train_labels = np.concatenate((train_labels, train_labels), axis=0)
+
+# Shuffle the data
+np.random.seed(42)
+shuffle_indices = np.random.permutation(len(train_data))
+train_data = train_data[shuffle_indices]
+train_labels = train_labels[shuffle_indices]
+
+# Split the data into training and validation
+split_index = len(train_data) // 2
+first_half, second_half = train_data[:split_index], train_data[split_index:]
+first_half_labels, second_half_labels = train_labels[:split_index], train_labels[split_index:]
 
 # Embedding dimension
 embedding_dim = 768  
@@ -102,9 +121,17 @@ model.compile(optimizer=Adam(learning_rate=lr_schedule), loss='binary_crossentro
 # checkpoint = ModelCheckpoint('lstm_weights.h5', monitor='val_accuracy', save_weights_only=True, mode='max', verbose=2)
 
 model.fit(
-    training_embeddings, train_labels,  # Training data and labels
+    first_half, first_half_labels,  # Training data and labels
     batch_size=64,
-    epochs=20,
+    epochs=10,
+    validation_data=(validation_embeddings, validation_labels),
+    callbacks=[early_stopping]
+)
+
+model.fit(
+    second_half, second_half_labels,  # Training data and labels
+    batch_size=64,
+    epochs=5,
     validation_data=(validation_embeddings, validation_labels),
     callbacks=[early_stopping]
 )
