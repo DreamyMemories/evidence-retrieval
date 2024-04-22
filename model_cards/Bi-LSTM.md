@@ -23,8 +23,8 @@ This is a classification model that was trained to
 
 <!-- Provide a longer summary of what this model is. -->
 
-This model is based upon a BERT model that was fine-tuned
-      on 30K pairs of texts.
+This model uses Bi-LSTM followed up by a fully-connected layer that was trained
+      on 23K pairs of texts.
 
 - **Developed by:** Wei Xiang Wong and Enlong Bo
 - **Language(s):** English
@@ -66,8 +66,8 @@ This model is based upon a BERT model that was fine-tuned
 <!-- This section provides information about how roughly how long it takes to train the model and the size of the resulting model. -->
 
 
-      - overall training time: 1 hour
-      - duration per training epoch: 3 minutes
+      - overall training time: 1 hour and 40 minutes
+      - duration per training epoch: 5 minutes
       - model size: 12.6MB
 
 ## Evaluation
@@ -118,10 +118,11 @@ The model obtained an accuracy of 85%, a recall of 71%, precision of 73% and F1-
 <!-- This section is meant to convey both technical and sociotechnical limitations. -->
 
 Any inputs (concatenation of two sequences) longer than
-      110 subwords will be truncated by the model.
+      110 tokens will be truncated by the model. This is due to the limitation of hardware where the memory is not enough to handle the word embeddings.
 
 ## Additional Information
 
 <!-- Any other information that would be useful for other people to know. -->
 
-Initial data pre processing is done through data augmentation using DistilBert embeddings to replace words that are contextually similar with p_aug = 0.3, aug_min = 1, top_k = 20 using nlaug library.
+110 tokens was the sweet spot we found where the model was able to handle the word embeddings without running out of memory while maximising possible performance. Initial data pre processing is done through data augmentation using DistilBert embeddings to replace words that are contextually similar with p_aug = 0.3, aug_min = 1, top_k = 20 using nlaug library. Early stopping is used to prevent overfitting with patience of 5 epochs.
+```
