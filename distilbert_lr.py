@@ -32,6 +32,7 @@ def get_distilbert_embeddings(data, tokenizer, model, batch_size=32):
 train_data = pd.read_csv('./data/train.csv')
 validation_data = pd.read_csv('./data/dev.csv')
 
+# Remove the [REF] tokens from the evidence
 train_data['Evidence'] = train_data['Evidence'].replace(r'[REF]', '', regex=True)
 validation_data['Evidence'] = validation_data['Evidence'].replace(r'[REF]', '', regex=True)
 
@@ -46,12 +47,9 @@ model = TFDistilBertModel.from_pretrained('distilbert-base-uncased')
 training_embeddings = get_distilbert_embeddings(train_data, tokenizer, model)
 validation_embeddings = get_distilbert_embeddings(validation_data, tokenizer, model)
 
-# The task is a pairwise sequence classification problem. use traditional 
-
 # Flatten the embeddings
 training_embeddings_flat = training_embeddings.reshape(training_embeddings.shape[0], -1)
 validation_embeddings_flat = validation_embeddings.reshape(validation_embeddings.shape[0], -1)
-
 
 # Initialize the Logistic Regression model
 lr_model = LogisticRegression(max_iter=1000)

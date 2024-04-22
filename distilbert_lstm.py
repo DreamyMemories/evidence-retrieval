@@ -46,9 +46,11 @@ def augment_data_bert(sentences, num_augments=1):
 train_data = pd.read_csv('./data/train.csv')
 validation_data = pd.read_csv('./data/dev.csv')
 
+# Remove the [REF] tokens from the evidence
 train_data['Evidence'] = train_data['Evidence'].replace(r'[REF]', '', regex=True)
 validation_data['Evidence'] = validation_data['Evidence'].replace(r'[REF]', '', regex=True)
 
+# Get the labels for prediction metrics
 train_labels = train_data['label'].values
 validation_labels = validation_data['label'].values
 
@@ -63,12 +65,9 @@ augmented_data = pd.DataFrame({
 })
 # Combine original and augmented data
 train_data_augmented = pd.concat([train_data, augmented_data], ignore_index=True)
-# Save the augmented data
-train_data_augmented.to_csv('train_augmented.csv', index=False)
 
 tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
 model = TFDistilBertModel.from_pretrained('distilbert-base-uncased')
-
 
 # Generate embeddings for your data
 training_embeddings = get_distilbert_embeddings(train_data, tokenizer, model)
@@ -117,8 +116,6 @@ early_stopping = tf.keras.callbacks.EarlyStopping(
 )
 
 model.compile(optimizer=Adam(learning_rate=lr_schedule), loss='binary_crossentropy', metrics=['accuracy'])
-
-# checkpoint = ModelCheckpoint('lstm_weights.h5', monitor='val_accuracy', save_weights_only=True, mode='max', verbose=2)
 
 model.fit(
     first_half, first_half_labels,  # Training data and labels
